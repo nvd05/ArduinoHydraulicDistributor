@@ -181,7 +181,7 @@ public:
 		double direction = get_direction(minimum, central, maximum);
 
 		// Serial.println(String(minimum) + " " + String(central) + " " + String(maximum));
-		// Serial.println(String(get_current_position()) + " " + String(get_expected_position()));
+		// Serial.println(String(get_current_position()) + " " + String(get_expected_position()) + " " + String(direction));
 		// Serial.println(direction);
 
 		_engine.set_direction(direction);
@@ -199,8 +199,6 @@ public:
 		HYDRAULIC_SPOOL_INITIAL_POSITION)
 	{
 	}
-
-	int mem;
 };
 
 /**
@@ -209,7 +207,7 @@ public:
 class HydraulicPiston : public HydraulicAssistant
 {
 private:
-	HydraulicSpool _spool;
+	HydraulicSpool &_spool;
 
 public:
 	void update_direction()
@@ -221,9 +219,8 @@ public:
 		double direction = get_direction(minimum, central, maximum);
 
 		// Serial.println(String(minimum) + " " + String(central) + " " + String(maximum));
-		// Serial.println(String(get_current_position()) + " " + String(get_expected_position()));
+		// Serial.println(String(get_current_position()) + " " + String(get_expected_position()) + " " + String(direction));
 		// Serial.println(direction);
-		// Serial.println(_spool.mem);
 
 		_spool.set_expected_position(direction);
 	}
@@ -233,18 +230,12 @@ public:
 		move(_spool.get_current_position());
 	}
 
-	void qef()
-	{
-		Serial.println(String(_spool.mem));
-	}
-
-	HydraulicPiston(HydraulicSpool spool) : _spool(spool), HydraulicAssistant(
+	HydraulicPiston(HydraulicSpool &spool) : _spool(spool), HydraulicAssistant(
 		HYDRAULIC_PISTON_MICROSECOND_MOVEMENT,
 		HYDRAULIC_PISTON_MAXIMUM_POSITION,
 		HYDRAULIC_PISTON_MINIMUM_POSITION,
 		HYDRAULIC_PISTON_INITIAL_POSITION)
 	{
-		spool.mem = 123;
 	}
 };
 
@@ -254,14 +245,11 @@ HydraulicPiston piston(spool);
 
 void setup()
 {
-	Serial.begin(9600);
-	Serial.println("run");
+	// Serial.begin(9600);
+	// Serial.println("run");
 
-	piston.set_expected_position(1);
+	piston.set_expected_position(4);
 	// spool.set_expected_position(0);
-
-	piston.qef();
-	Serial.println(spool.mem);
 }
 
 void loop()
@@ -272,11 +260,11 @@ void loop()
 	piston.update_direction();
 	spool.update_direction();
 
-	String piston_current = String(piston.get_current_position());
-	String spool_current  = String(spool.get_current_position());
+	// String piston_current = String(piston.get_current_position());
+	// String spool_current  = String(spool.get_current_position());
 
-	String piston_expected = String(piston.get_expected_position());
-	String spool_expected = String(spool.get_expected_position());
+	// String piston_expected = String(piston.get_expected_position());
+	// String spool_expected = String(spool.get_expected_position());
 
 	// Serial.println("current: " + piston_current + " " + spool_current + ", expected: " + piston_expected + " " + spool_expected);
 	// Serial.println(spool.mem);
