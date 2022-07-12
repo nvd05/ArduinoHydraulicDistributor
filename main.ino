@@ -113,7 +113,7 @@ public:
 };
 
 /**
- * @brief Гидравлический двигатель
+ * @brief Гидравлический двигатель => electric actuator
  */
 class HydraulicEngine
 {
